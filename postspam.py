@@ -13,7 +13,7 @@ useragents = open("useragents.txt", "r", encoding='UTF-8').read()
 
 def generate_headers(username, password):
     headers = {'Host': 'discod.gift',
-               'User-Agent': f'{get_random_useragent()}',
+               'User-Agent': f'{get_random_useragent() + str(random.randrange(0, 10, 1))}',
                'Accept': '*/*',
                'Accept-Language': 'en-US,en;q=0.5',
                'Accept-Encoding': 'gzip, deflate, br',
@@ -23,8 +23,8 @@ def generate_headers(username, password):
                'Origin': 'https://discod.gift',
                'DNT': '1',
                'Connection': 'keep-alive',
-               'Referer': 'https://discod.gift/hYQKbd4a5a8d2ApMHfkLuHt112O5fhysfmP4IfEBFDXAqfqSVf2CDYd7i',
-               'Cookie': 'lumen_session=9Q13VlpIjriYwSYHbaza416tVFL7HAjD3rq3JZ1z; _TDG=77859ab4dda19d3e69810aecda64024e; timezoneOffset=10800,0',
+               'Referer': 'https://discod.gift/3WUpPRLxtCuFWdbd4a5a8d2Jt4T5rbnAr51FGVdWpnItFkAoklXmROwQr',
+               'Cookie': 'lumen_session=gBoj5ncX2RKnbMkPXU3SRCojHhHqOWlU67EhaiaO; _TDG=919ebdb693dd4e55a2c4e1cb7d87fefe; timezoneOffset=10800,0',
                'Sec-Fetch-Dest': 'empty',
                'Sec-Fetch-Mode': 'cors',
                'Sec-Fetch-Site': 'same-origin',
