@@ -1,14 +1,17 @@
+import time
+
 import requests
 import json
 import random
 
 url = 'https://discod.gift/login/dologin'
+# https://discod.gift/steam
+# https://developer.mozilla.org/ru/docs/Web/HTTP/Cookies
 
 useragents = open("useragents.txt", "r", encoding='UTF-8').read()
 
 
 def generate_headers(username, password):
-    # 19 + n.l + p.l
     headers = {'Host': 'discod.gift',
                'User-Agent': f'{get_random_useragent()}',
                'Accept': '*/*',
@@ -16,7 +19,7 @@ def generate_headers(username, password):
                'Accept-Encoding': 'gzip, deflate, br',
                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                'X-Requested-With': 'XMLHttpRequest',
-               'Content-Length': f'{username.len + password.len + 19}',
+               'Content-Length': f'{len(username) + len(password) + 19}',
                'Origin': 'https://discod.gift',
                'DNT': '1',
                'Connection': 'keep-alive',
@@ -27,6 +30,7 @@ def generate_headers(username, password):
                'Sec-Fetch-Site': 'same-origin',
                'Sec-GPC': '1'
                }
+    return headers
 
 
 def get_random_useragent():
@@ -34,6 +38,20 @@ def get_random_useragent():
     return s[random.randrange(0, len(s))]
 
 
+def get_random_userdata():
+    r = requests.get("https://randomuser.me/api/?format=json")
+    data = json.loads(r.text)
+    return data['results'][0]['login']
+
+
+def create_post():
+    u = get_random_userdata()["username"]
+    p = get_random_userdata()["password"]
+    r = requests.post(url, data=f'username={u}&password={p}', headers=generate_headers(u, p))
+    return r
+
 
 # r = requests.post(url, data=f'username={username}&password={password}', headers=headers)
-print(get_random_useragent())
+while True:
+    print(create_post())
+    time.sleep(3)
