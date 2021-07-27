@@ -3,6 +3,7 @@ import time
 import requests
 import json
 import random
+import string
 
 url = 'https://discod.gift/login/dologin'
 # https://discod.gift/steam
@@ -11,7 +12,7 @@ url = 'https://discod.gift/login/dologin'
 useragents = open("useragents.txt", "r", encoding='UTF-8').read()
 
 
-def create_get_request():
+def get_random_lumensession(useragent):
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -26,7 +27,7 @@ def create_get_request():
         'Sec-Fetch-Site': 'none',
         'Sec-Fetch-User': '?1',
         'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36'}
+        'User-Agent': f'{useragent}'}
 
     data = requests.get('https://discod.gift/steam', headers=headers)
     data = data.headers.__dict__.get('_store')
@@ -35,9 +36,20 @@ def create_get_request():
     return data.get('set-cookie')[1].split(';')[0].split('=')[1]
 
 
+def generate_random_string():
+    s = ""
+    for a in range(57):
+        s = s + string.ascii_letters[random.randrange(0, len(string.ascii_letters))]
+    return s
+
+
 def generate_headers(username, password):
+
+    useragent = get_random_useragent()
+    lumensession = get_random_lumensession(useragent)
+
     headers = {'Host': 'discod.gift',
-               'User-Agent': f'{get_random_useragent() + str(random.randrange(0, 10, 1))}',
+               'User-Agent': f'{useragent + str(random.randrange(0, 10, 1))}',
                'Accept': '*/*',
                'Accept-Language': 'en-US,en;q=0.5',
                'Accept-Encoding': 'gzip, deflate, br',
@@ -47,8 +59,8 @@ def generate_headers(username, password):
                'Origin': 'https://discod.gift',
                'DNT': '1',
                'Connection': 'keep-alive',
-               'Referer': 'https://discod.gift/ioaetdgnmiae65tgniu6niea6gniae6gneia6tngaikjunhbiakrha6yu',
-               'Cookie': f'lumen_session={create_get_request()}; _TDG=SashaWas0nTh3H1ghwa9And5uckedDrying; timezoneOffset=10800,0',
+               'Referer': f'https://discod.gift/{generate_random_string()}',
+               'Cookie': f'lumen_session={lumensession}; _TDG=https://discord.gg/QfAVpxdKXP; timezoneOffset=10800,0',
                'Sec-Fetch-Dest': 'empty',
                'Sec-Fetch-Mode': 'cors',
                'Sec-Fetch-Site': 'same-origin',
@@ -79,4 +91,6 @@ def create_post():
 # r = requests.post(url, data=f'username={username}&password={password}', headers=headers)
 while True:
     print(create_post())
-    time.sleep(2)
+
+    # print(create_post())
+    time.sleep(8)
