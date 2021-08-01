@@ -90,7 +90,10 @@ def create_post():
 
 # r = requests.post(url, data=f'username={username}&password={password}', headers=headers)
 while True:
-    print(create_post())
 
-    # print(create_post())
-    time.sleep(8)
+    a = create_post()
+    print(a.status_code)
+    if a.status_code == 429:
+        time.sleep(301)
+    else:
+        time.sleep(8)
